@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import urllib
 import urllib.request
 import urllib.parse
@@ -34,14 +36,14 @@ class SkellCollocation:
     word: str
     lempos: str
     collocation_pair: str
-    gram_rel: "SkellGrammaticalRelation"
+    gram_rel: SkellGrammaticalRelation
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}({self.collocation_pair})"
 
 
 class SkellGrammaticalRelation:
-    def __init__(self, word: str, desc: str, word_sketch: "SkellWordSketch"):
+    def __init__(self, word: str, desc: str, word_sketch: SkellWordSketch):
         self.word = word
         self.desc = desc
         self.collocations: List[SkellCollocation] = []
