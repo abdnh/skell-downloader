@@ -1,0 +1,7 @@
+[project]
+name = "skell-downloader"
+version = "0.1.0"
+description = "A Python script to download example sentences from SKELL (Sketch Engine for Language Learning)"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
