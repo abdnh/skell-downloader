@@ -80,7 +80,7 @@ class SkellWordSketch:
 class SkellDownloader:
 
     # Languages supported by SKELL
-    langs = ["English", "German", "Italian", "Czech", "Estonian"]
+    langs = ["English", "German", "Italian", "Czech", "Estonian", "Russian"]
 
     def __init__(self, lang: str = "English"):
         self.lang = lang
