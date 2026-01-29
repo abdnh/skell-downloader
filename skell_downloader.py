@@ -85,8 +85,8 @@ class SkellDownloader:
     def __init__(self, lang: str = "English"):
         self.lang = lang
 
-    def _get_json(self, url: str) -> Any:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    def _get_json(self, path: str) -> Any:
+        req = urllib.request.Request(f"https://skell.sketchengine.eu/api/{path}", headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req) as res:
             return json.loads(res.read())
 
@@ -103,7 +103,7 @@ class SkellDownloader:
     @functools.lru_cache
     def get_examples(self, word: str) -> List[SkellSentence]:
         data = self._get_json(
-            f"https://skell.sketchengine.eu/api/run.cgi/concordance?query={quote(word)}&lang={self.lang}&format=json"
+            f"concordance?query={quote(word)}&lang={self.lang}&format=json"
         )
         sentences = self._get_lines_from_data(data)
 
@@ -117,7 +117,7 @@ class SkellDownloader:
     ) -> SkellWordSketch:
         lpos = f"&lpos=-{kind.value}" if kind else ""
         data = self._get_json(
-            f"https://skell.sketchengine.eu/api/run.cgi/wordsketch?lang={self.lang}&query={quote(word)}&format=json"
+            f"wordsketch?lang={self.lang}&query={quote(word)}&format=json"
             + lpos
         )
         word_sketch = SkellWordSketch(word, kind)
@@ -139,17 +139,14 @@ class SkellDownloader:
     ) -> List[SkellSentence]:
         rel = collocation.gram_rel
         data = self._get_json(
-            f"https://skell.sketchengine.eu/api/run.cgi/wordsketch_concordance?headword={rel.word}-{rel.word_sketch.kind.value}&lang={self.lang}&coll={collocation.lempos}&gramrel={quote(rel.desc)}&format=json"
+            f"wordsketch_concordance?headword={rel.word}-{rel.word_sketch.kind.value}&lang={self.lang}&coll={collocation.lempos}&gramrel={quote(rel.desc)}&format=json"
         )
         sentences = self._get_lines_from_data(data)
         return sentences
 
-    # def get_concordances(self, combined_query: str):
-    #    pass
-
     def get_similar_words(self, word: str) -> List[str]:
         data = self._get_json(
-            f"https://skell.sketchengine.eu/api/run.cgi/thesaurus?lang={self.lang}&query={quote(word)}&format=json"
+            f"thesaurus?lang={self.lang}&query={quote(word)}&format=json"
         )
         words = []
         for word_data in data.get("Words", []):
