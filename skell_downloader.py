@@ -92,7 +92,9 @@ class SkellDownloader:
 
     def _get_lines_from_data(self, data: Dict) -> List[SkellSentence]:
         lines = []
-        for line in data.get("Lines", []):
+        if not data.get("Lines"):
+            return []
+        for line in data["Lines"]:
             left = self._join_line_component_list(line, "Left")
             kwic = self._join_line_component_list(line, "Kwic")
             right = self._join_line_component_list(line, "Right")
